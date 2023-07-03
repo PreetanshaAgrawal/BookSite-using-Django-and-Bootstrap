@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block styles %}
+
+{% endblock styles %}
+
+
+{% block slider %}
+<div class="slider">
+    <div class="card">
+      <!-- Card content -->
+    </div>
+    <div class="card">
+      <!-- Card content -->
+    </div>
+    <div class="card">
+      <!-- Card content -->
+    </div>
+  </div>
+  
+  
+  {% comment %} Search how to display as slider in django in chatgpt {% endcomment %}
+{% endblock slider %}
+
+ {% block script %}
+ <script src="https://cdn.jsdelivr.net/jquery.slick/1.6.0/slick.min.js"></script> 
+  <script>
+      $(document).ready(function(){
+        $('.slider').slick({
+          dots: true,
+          infinite: true,
+          speed: 300,
+          slidesToShow: 1,
+          slidesToScroll: 1
+        });
+      });
+    </script>
+ {% endblock script %}

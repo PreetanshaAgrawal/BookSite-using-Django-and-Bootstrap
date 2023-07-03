@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+
+{% block favorites %}
+
+<style>
+    {% comment %} .card{
+        display: flex;
+        align-items: flex-start; /* Align items vertically at the top */
+    }
+
+    .card::after {
+        content: "";
+        display: table;
+        clear: both;
+    }
+    .card img{
+        float: left;
+        margin: 10px;
+    }
+    .card-body{
+        float: right;
+    } {% endcomment %}
+
+    .card-mine {
+        display: flex;
+        border: 3px solid white;
+      }
+      
+      .card-mine img {
+        flex: 0 0 auto;
+        margin: 10px;
+      }
+      
+      .card-body-mine {
+        flex: 1 1 auto;
+        margin: 10px 20%;
+      }
+    .card-img, .card-img-bottom, .card-img-top {
+        width: 200px;
+        height: auto;
+    }
+</style>
+
+<center><h1 class="my-3 mx-3">Your Favorites</h1></center>
+<hr/>
+<hr/>
+
+{% if favBooks %} 
+{% for item in favBooks %}
+<div class="card-mine">
+  <img
+    src="{{item.volumeInfo.imageLinks.thumbnail}}"
+    class="card-img-top"
+    alt="..."
+    {% comment %} width="200px" {% endcomment %}
+    height="200px"
+  />
+  <div class="card-body-mine">
+    <h5 class="card-title-mine">{{item.volumeInfo.title|slice:":60"}}...</h5>
+    <p class="card-text-mine">{{item.volumeInfo.description|slice:":600"|striptags}}...</p>
+    <a href="{% url 'favorite' bookId=item.id %}" class="btn btn-primary"
+      >Remove From Favorites</a
+    >
+    </div>
+</div>
+{% endfor %} 
+{% else %}
+<h1>No Favorites yet...</h1>
+{% endif %} 
+{% endblock favorites %}

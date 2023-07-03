@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+
+{% block Recommendations %}
+<style>
+    {% comment %} .card{
+        display: flex;
+        align-items: flex-start; /* Align items vertically at the top */
+    }
+
+    .card::after {
+        content: "";
+        display: table;
+        clear: both;
+    }
+    .card img{
+        float: left;
+        margin: 10px;
+    }
+    .card-body{
+        float: right;
+    } {% endcomment %}
+
+    .card-mine {
+        display: flex;
+        border: 3px solid white;
+      }
+      
+      .card-mine img {
+        flex: 0 0 auto;
+        margin: 10px;
+      }
+      
+      .card-body-mine {
+        flex: 1 1 auto;
+        margin: 10px 20%;
+      }
+    .card-img, .card-img-bottom, .card-img-top {
+        width: 200px;
+        height: auto;
+    }
+</style>
+
+
+
+{% if recom_set %} 
+{% comment %} {{recom_set}} {% endcomment %}
+<center><h1 class="my-3 mx-3">Recommendations based on your searches</h1></center>
+<hr/>
+<hr/>
+{% for items in recom_set %}
+{% for item in items %}
+<div class="card-mine">
+  <img
+    src="{{item.volumeInfo.imageLinks.thumbnail}}"
+    class="card-img-top"
+    alt="..."
+    height="200px"
+  />
+  <div class="card-body-mine">
+    <h5 class="card-title-mine">{{item.volumeInfo.title|slice:":60"}}...</h5>
+    <p class="card-text-mine">{{item.volumeInfo.description|slice:":600"}}...</p>
+    <a href="{% url 'review' item_id=item.id %}" class="btn btn-primary"
+      >Full Preview</a
+    >
+    </div>
+</div>
+{% endfor %} 
+{% endfor %} 
+{% else %}
+<h1>Not found reliable content! Please enter the value again.</h1>
+{% endif %} 
+
+{% endblock Recommendations %}

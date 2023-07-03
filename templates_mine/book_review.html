@@ -1,0 +1,101 @@
+{% extends 'base.html'%} {% block review %}
+<style>
+  .card-img, .card-img-bottom, .card-img-top {
+      width: 15rem;
+      height: 20rem;
+      {% comment %} margin: auto;
+      display: block; {% endcomment %}
+  }
+  .card-mine{
+      display: flex;
+      border: 3px solid white;
+    }
+
+    .card-mine img {
+      flex: 0 0 auto;
+      margin: 10px;
+    }
+
+    .card-body-mine{
+      flex: 1 1 auto;
+      margin: 10px 20%;
+    }
+    .label_mine{
+      font-size: 2rem;
+      font-family: 'Helvetica Ne';
+      /* padding: 1rem; */
+    }
+    .review_area{
+      width: 100%;
+      height: 20vh;
+      margin: 1rem auto;
+    }
+    .float-right{
+      float: right;
+      margin-top: -3rem;
+    }
+</style>
+
+<div class="card-mine">
+  <img
+    src="{{item.volumeInfo.imageLinks.thumbnail}}"
+    class="card-img-top"
+    alt="..."
+  />
+  <div class="card-body-mine">
+    <h1 class="card-title">{{item.volumeInfo.title}}</h1>
+    <p class="card-text"><b>Author's Name:</b> {{item.volumeInfo.authors.0}}</p>
+    <p class="card-text">
+      <b>Published Date:</b> {{item.volumeInfo.publishedDate}}
+    </p>
+    <p class="card-text">
+      <b>Description:</b><br /><br />
+      {{item.volumeInfo.description|striptags}}
+    </p>
+    <form method="post" action="favorites" style="margin: 3rem">
+      <center>
+        <a href="{% url 'favorite' bookId=item.id %}" class="btn btn-success"
+          >Add to Favorites</a
+        >
+      </center>
+    </form>
+  </div>
+</div>
+<h3 class="card-title my-1 mx-1">What do you think about this book?</h3>
+<form method="post" action="/review/{{ item.id }}/" style="margin: 3rem">
+  {% csrf_token %}
+  <label class="label_mine">Write Review: </label>
+  <br />
+
+  <textarea
+    placeholder="Write your experience here..."
+    class="review_area"
+    name="reviewInput"
+  ></textarea>
+  <center>
+    <button class="btn btn-primary" name="action" value="submitRev">
+      Submit Review
+    </button>
+  </center>
+</form>
+<hr />
+<br />
+{% if reviews %}
+<h3 class="card-title my-1 mx-1">What others thought of this book...</h3>
+<hr />
+<br />
+{% for rev in reviews%}
+<div class="card" style="width: 25rem">
+  <div class="card-body">
+    <h5 class="card-title">UserName: {{rev.guest_id}}</h5>
+    <p class="card-text">Comment: <br />{{rev.reviewInput}}</p>
+  </div>
+</div>
+<form method="post" action="/review/{{ item.id }}/" style="margin: -1rem 2rem">
+  {% csrf_token %}
+  <input type="hidden" name="action" value="delete_review" />
+  <input type="hidden" name="review_id" value="{{ rev.id }}" />
+  <button class="btn btn-primary float-right">Delete Review</button>
+</form>
+<hr />
+{% endfor %} {% endif %} {% endblock review %}
